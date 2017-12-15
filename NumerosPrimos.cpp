@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   NumerosPrimos.cpp
  * Author: aabedraba
- * 
+ *
  * Created on November 14, 2017, 10:34 PM
  */
 
@@ -13,10 +13,6 @@ NumerosPrimos::NumerosPrimos(const long rango)
     : _primerosMil()
 {
     primosHastaElMil(); //genera los primeros primos hasta el  mil (168 primos)
-}
-
-void NumerosPrimos::generaPrimos() {
-
 }
 
 /**
@@ -42,28 +38,93 @@ void NumerosPrimos::primosHastaElMil() {
 }
 
 /**
- * @brief Comprueba que el número que se pasa como argumento no sea un compuesto por la lista de los primeros primos
- * hasta el mil.
- * @param posiblePrimo int, número que queremos comprobar
- * @return true, si no es compuesto por los primeros primos hasta el mil. false, si es compuesto.
+ * Comprueba si un número es primo o no. Primero prueba si está compuesto por lo mil primeros primos
+ * en caso contrario, itera con el test de primalidad de Miller-Rabin durante 10 veces.
+ * @param n mpz_t, número a comprobar
+ * @return true, si es primo. false, si es compuesto.
  */
-bool NumerosPrimos::compruebaLosPrimerosMil( int& posiblePrimo ) {
-    auto iter = _primerosMil.begin();
-    for (;  iter != _primerosMil.end(); iter++)
-        if ( posiblePrimo % *iter ==0 ) return false;
+bool NumerosPrimos::esPrimo(mpz_t &n) {
+    //Comprueba con los primeros mil
+    if ( !compruebaLosPrimerosMil( n ) ) return false;
+
+    //Comprueba con el test de primalidad Miller-Rabin
+    //Preparatorios para la función
+    //n = (2^d)*s + 1
+    mpz_t d;
+    mpz_init_set(d, n);
+    mpz_sub_ui(d, d, 1);
+    while ( mpz_fdiv_ui(d, 2) == 0 ) // d%2 == 0
+        mpz_div_ui(d, d, 2);
+
+    int numeroDeIteraciones = 10; //número de iteraciones para el test de Miller-Rabin
+    for (int i = 0; i < numeroDeIteraciones; ++i)
+        if ( !testMillerRabin(d, n) ) return false;
     return true;
 }
 
 
-bool testMillerRabin( mpz_t &posiblePrimo ){
-//    int numDeIteraciones = 10; //Número de veces que aplicamos el algoritmo de Miller-Rabin
-//    //Algoritmo de Miller-Rabin
-//    //n = (2^d)*s + 1
-//    //0 < a < n-1
-//    int num = 1;
-//    mpz_t d;
-//    mpz_set(d, mpz_sub_ui(posiblePrimo,posiblePrimo,num));
-//    while (d % 2 == 0) d /= 2;
-//    int a = 2 + rand() % (posiblePrimo - 4);
+/**
+ * @brief Comprueba que el número que se pasa como argumento no sea un compuesto por la lista de los primeros primos
+ * hasta el mil.
+ * @param n mpz_t, número que queremos comprobar
+ * @return true, si no es compuesto por los primeros primos hasta el mil. false, si es compuesto.
+ */
+bool NumerosPrimos::compruebaLosPrimerosMil( mpz_t& n ) {
+    auto iter = _primerosMil.begin();
 
+    while ( iter != _primerosMil.end() )
+        if ( mpz_fdiv_ui(n, (*iter++) ) == 0) return false;
+
+    return true;
+}
+
+/**
+ * Utiliza el algoritmo de Miller-Rabin para comprobar que un número es o no primo
+ * @param d mpz_t, del algoritmo, n = (2^d)*s + 1
+ * @param n mpz_t, número a comprobar
+ * @return true, posiblemente primo. false, compuesto.
+ */
+bool NumerosPrimos::testMillerRabin(mpz_t d, mpz_t &n) {
+    mpz_t a; mpz_init(a);
+    mpz_t aux; mpz_init(aux);
+    mpz_t aux2; mpz_init(aux2);
+
+    // a = 2 + rand() % (n - 4);
+    // Escoger a entre [2..n-2] para evitar casos límites
+    gmp_randstate_t estado; gmp_randinit_default(estado);
+    mpz_set (a, n);
+    mpz_sub_ui(a, a, 4);
+    mpz_urandomm( aux, estado, a); // aux = rand % (n-4)
+    mpz_add_ui(a, aux, 2); // a = 2 + aux
+
+    // aux = a^d % n
+    mpz_powm(aux, a, d, n);
+
+    // aux == 1 || aux == n-1
+    mpz_sub_ui(aux2, n, 1); //aux2 = n-1
+    int comparacion1 = mpz_cmp_ui(aux, 1); //cero si verdadero
+    int comparacion2 = mpz_cmp(aux, aux2); //cero si verdadero
+    if ( comparacion1==0 || comparacion2==0 )
+        return true;
+
+    // Repetir hasta
+    // (i) d != n-1
+    // (ii)  (x^2) % n != 1
+    // (iii) (x^2) % n != n-1
+    while ( mpz_cmp(aux2, d) != 0 ){ // d != aux2(n-1)
+        mpz_powm_ui(aux, aux, 2, n); // aux = aux*aux % n
+        mpz_mul_ui(d, d, 2); // d*=2
+
+        if ( mpz_cmp_ui(aux, 1) == 0 ) { //x == 1
+            mpz_clears(a, aux, aux2, estado);
+            return false; //compuesto
+        }
+        if ( mpz_cmp(aux, aux2) == 0 ) {//x == n-1
+            mpz_clears(a, aux, aux2, estado);
+            return true; //posible primo
+        }
+    }
+    // devuelve compuesto
+    mpz_clears(a, aux, aux2, estado);
+    return false;
 }

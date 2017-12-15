@@ -7,25 +7,9 @@
 #IncludeRegexTransform: 
 
 /home/aabedraba/Github/RSA/NumerosPrimos.cpp
-fstream
--
-NumerosPrimos.h
-/home/aabedraba/Github/RSA/NumerosPrimos.h
-
-/home/aabedraba/Github/RSA/NumerosPrimos.h
-vector
--
-cmath
--
-string
--
-list
--
 
 /home/aabedraba/Github/RSA/main.cpp
 iostream
--
-cstdlib
 -
 gmp.h
 -

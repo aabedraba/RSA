@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   NumerosPrimos.h
  * Author: aabedraba
  *
@@ -22,18 +22,17 @@
 
 class NumerosPrimos {
 public:
-    NumerosPrimos( const long rango );
+    explicit NumerosPrimos( const long rango );
     NumerosPrimos( const NumerosPrimos& orig ) = default;
     virtual ~NumerosPrimos( ) = default;
-    
+
     void primosHastaElMil();
 
-    NumerosPrimos(const std::list<int> &_primerosMil);
-
-    void generaPrimos();
-    bool compruebaLosPrimerosMil( int& posiblePrimo );
-    bool testMillerRabin( mpz_t& posiblePrimo );
-    std::pair<mpz_t, mpz_t> getPrimos() const;
+//    void generaPrimos();
+//    std::pair<mpz_t, mpz_t> getPrimos() const;
+    bool esPrimo( mpz_t &n );
+    bool compruebaLosPrimerosMil( mpz_t& n );
+    bool testMillerRabin( mpz_t d, mpz_t &n );
 private:
     std::list<short> _primerosMil; ///Los primeros números primos en el rango de [2,1000)
 };
