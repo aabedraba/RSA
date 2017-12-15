@@ -18,6 +18,7 @@
 #include <cmath>
 #include <string>
 #include <list>
+#include <gmp.h>
 
 class NumerosPrimos {
 public:
@@ -31,10 +32,10 @@ public:
 
     void generaPrimos();
     bool compruebaLosPrimerosMil( int& posiblePrimo );
-    bool testMillerRabin( int& posiblePrimo );
-    std::pair<long, long> getPrimos() const;
+    bool testMillerRabin( mpz_t& posiblePrimo );
+    std::pair<mpz_t, mpz_t> getPrimos() const;
 private:
-    std::list<int> _primerosMil; ///Los primeros números primos en el rango de [2,1000)
+    std::list<short> _primerosMil; ///Los primeros números primos en el rango de [2,1000)
 };
 
 #endif /* NUMEROSPRIMOS_H */
