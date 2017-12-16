@@ -1,24 +1,13 @@
 #include <iostream>
-#include <gmp.h>
+#include "NumerosPrimos.h"
 
 using namespace std;
 
-bool testMillerRabin(mpz_t d, mpz_t &n) {
-
-}
-
-
-
-
 int main(){
-    mpz_t posiblePrimo;
-    for (int i = 5; i < 1000; ++i) {
-        mpz_init_set_ui(posiblePrimo, i);
-        bool ehPrimo = esPrimo(posiblePrimo);
-        if ( ehPrimo )
-            cout << i << endl;
-    }
-
-
+    NumerosPrimos primos(100);
+    cout << primos.getPrimos().first << endl;
+    cout << primos.getPrimos().second << endl;
+    if ( mpz_probab_prime_p(primos.getPrimos().first, 40) > 0 ) cout << "el primero es primo" << endl;
+    if ( mpz_probab_prime_p(primos.getPrimos().second, 10) > 0 ) cout << "el segundo también es primo" << endl;
     return 0;
 }
