@@ -29,8 +29,9 @@ void NumerosPrimos::generaPrimos( const long rango ) {
     mpz_rrandomb( _primos.second, state2, rango+1);
 
     if ( mpz_fdiv_ui(_primos.first, 2) == 0 ) mpz_sub_ui(_primos.first, _primos.first, 1); // _primos.first--; convirtiendo a impar
-    while ( !esPrimo( _primos.first ) ) mpz_add_ui( _primos.first, _primos.first, 2 ); // _primos.first+=2
     if ( mpz_fdiv_ui(_primos.second, 2) == 0 ) mpz_sub_ui(_primos.second, _primos.second, 1); // _primos.second--; convirtiendo a impar
+
+    while ( !esPrimo( _primos.first ) ) mpz_add_ui( _primos.first, _primos.first, 2 ); // _primos.first+=2
     while ( !esPrimo( _primos.second ) ) mpz_add_ui( _primos.second, _primos.second, 2 ); // _primos.second+=2
 }
 
