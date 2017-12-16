@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/aabedraba/Github/RSA/src/NumerosPrimos.cpp
+fstream
+-
+NumerosPrimos.h
+/home/aabedraba/Github/RSA/src/NumerosPrimos.h
+
+/home/aabedraba/Github/RSA/src/NumerosPrimos.h
+vector
+-
+cmath
+-
+string
+-
+list
+-
+gmp.h
+-
+
+/home/aabedraba/Github/RSA/src/main.cpp
+iostream
+-
+NumerosPrimos.h
+/home/aabedraba/Github/RSA/src/NumerosPrimos.h
+

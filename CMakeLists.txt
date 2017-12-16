@@ -3,14 +3,17 @@ project(RSA)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(SRCS
+        src/main.cpp
+        src/NumerosPrimos.h
+        src/NumerosPrimos.cpp)
+
 add_executable(RSA
-    main.cpp
-    NumerosPrimos.cpp
-    NumerosPrimos.h)
+    ${SRCS})
 
 set(CMAKE_MODULE_PATH
         ${CMAKE_MODULE_PATH}
-        ${CMAKE_SOURCE_DIR}/)
+        ${CMAKE_SOURCE_DIR}/cmake)
 
 #Adding GMP support
 find_package(GMP REQUIRED)
