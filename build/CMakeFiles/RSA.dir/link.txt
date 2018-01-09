@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/RSA.dir/src/main.cpp.o CMakeFiles/RSA.dir/src/NumerosPrimos.cpp.o CMakeFiles/RSA.dir/src/Claves.cpp.o  -o RSA -Wl,-rpath,/usr/local/lib /usr/local/lib/libgmp.so /usr/local/lib/libgmpxx.so 
