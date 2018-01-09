@@ -44,7 +44,13 @@ Los componentes son:
 
 Aunque para la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora.
 
+##Programa de prueba
+En el programa de prueba se coge un número y se cifra y descifra utilizando la implementación básica de RSA:
 
+1. Cifrado: mensaje^e mod n
+2. Descifrado: mensajeCifrado^d mod n
+
+Si ejecuta el programa repetidas veces verá que los números primos que se generan son los mismos ya que para la consistencia y simplicidad he preferido no darle una semilla al generador de los números primos. Aunque el cálculo de los mismo es orgánico en el código.
 
 **En desarrollo...**
 ### RSA
