@@ -5,7 +5,7 @@
 #include "Claves.h"
 
 Claves::Claves( NumerosPrimos &primos ) {
-    mpz_inits ( _d, _n ); // inicializando números de multi precisión
+    mpz_init( _d ); mpz_init( _n );
     mpz_init_set ( _p, primos.getPrimos().first );
     mpz_init_set ( _q, primos.getPrimos().second );
     mpz_init_set_ui ( _e, 65537 ); //primo de Fermat
@@ -16,22 +16,22 @@ Claves::Claves( NumerosPrimos &primos ) {
 void Claves::crearClavePublica() {
     // n = p*q
     // e = 65537
-    mpz_set ( _n, _p );
-    mpz_mul ( _n, _n, _q );
-    mpz_set ( _clavePublica.first, _n );
-    mpz_set ( _clavePublica.second, _e );
+    mpz_mul ( _n, _p, _q );
+    mpz_set ( _clavePublica.first, _e );
+    mpz_set ( _clavePublica.second, _n );
 }
 
 void Claves::crearClavePrivada( ) {
     // d = e^-1 mod ((p-1)*(q-1))
     // e = 65537
     mpz_t carmichael; mpz_init(carmichael);
-    mpz_sub_ui( _p, _p, 1 );
-    mpz_sub_ui( _q, _q, 1 );
-    mpz_mul( carmichael, _p, _q ); // carmichael = (p-1)*(q-1) (Robert Daniel Carmichael <3)
+    mpz_t p1, q1; mpz_init(p1); mpz_init(q1);
+    mpz_sub_ui( p1, _p, 1 );
+    mpz_sub_ui( q1, _q, 1 );
+    mpz_mul( carmichael, p1, q1 ); // carmichael = (p-1)*(q-1) (Robert Daniel Carmichael <3)
     mpz_invert( _d, _e, carmichael );
     mpz_set ( _clavePrivada.first, _d );
-    mpz_set ( _clavePrivada.second, _e);
+    mpz_set ( _clavePrivada.second, _n);
 }
 
 const std::pair<mpz_t, mpz_t> &Claves::get_clavePublica( ) const {

@@ -15,7 +15,6 @@ public:
     virtual ~Claves() = default;
 
     const std::pair<mpz_t, mpz_t> &get_clavePublica( ) const;
-
     const std::pair<mpz_t, mpz_t> &get_clavePrivada( ) const;
 
 private:

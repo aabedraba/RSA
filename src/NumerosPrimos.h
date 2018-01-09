@@ -15,10 +15,11 @@
 #define NUMEROSPRIMOS_H
 
 #include <vector>
-#include <cmath>
 #include <string>
-#include <list>
+#include <cmath>
 #include <gmp.h>
+#include <fstream>
+#include <list>
 
 class NumerosPrimos {
 public:

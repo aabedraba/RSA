@@ -5,11 +5,25 @@
 #ifndef RSA_RSA_H
 #define RSA_RSA_H
 
-#include <gmp.h>
+#include <string>
+#include "NumerosPrimos.h"
+#include "Claves.h"
+
 
 class RSA {
 public:
+    RSA( int tamClaves );
+    void mostrarClaves();
+    std::string cifrar( std::string nomFicheroEntrada );
+    void descifrar();
+
+private:
     void combinar ( mpz_t a, mpz_t b, mpz_t &resultado );
+    char* enteroAString(mpz_t x);
+
+private:
+    NumerosPrimos _primos;
+    Claves _claves;
 };
 
 

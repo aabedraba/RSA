@@ -5,8 +5,6 @@
  * Created on November 14, 2017, 10:34 PM
  */
 
-#include <fstream>
-
 #include "NumerosPrimos.h"
 
 NumerosPrimos::NumerosPrimos(const long rango)

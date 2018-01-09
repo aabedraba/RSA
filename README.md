@@ -29,3 +29,9 @@ Por ello hago una lista de todo los números primos que hay en el rango [2, 1000
 El test de Miller-Rabin reduce la probablidad en el orden de 4^-k , siendo k el número de iteraciones que se realizan de este test. Por tanto, junto con el 90% que ya hemos descartado, 10 iteraciones de este test hacen que la probabilidad de que un número no sea primo sea de **99.9999915736%**. Enough.
 
 En el código se puede ver la implementación del test usando GMP, lo cual lo hace un poco-bastante menos legible.
+
+### Claves
+La clase de claves tiene la implementación trivial de la generación de claves de RSA. Aunque en la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora. 
+
+### RSA
+La cla

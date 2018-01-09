@@ -1,32 +1,44 @@
 #include <iostream>
+#include <gmp.h>
 #include "Claves.h"
-#include <sstream>
-
+#include "NumerosPrimos.h"
 using namespace std;
 
-void combinar( const mpz_t a, const mpz_t b, mpz_t &resultado ) {
-    mpz_t contador;
-    mpz_init_set_ui( contador, 1 );
-    while ( mpz_cmp( contador, b) < 0 || mpz_cmp( contador, b ) == 0 ) //contador <= b
-    mpz_mul_ui(contador, contador, 10);
-
-    //a*contador + b
-    mpz_mul( resultado, a, contador );
-    mpz_add( resultado, resultado, b );
-}
-
-int main(){
+int main() {
+    //Aunque la generación de los números primos es correcta,
+    //esto es una comprobación, usando una función de la librería
+    //de GMP que calcula, de nuevo utilizando el test de Miller
+    //Rabin si los números son o no primos
+    int esPrimo;
     NumerosPrimos primos( 1024 );
+    mpz_probab_prime_p(primos.getPrimos().first, esPrimo);
+    cout << "Primer primo: " << primos.getPrimos().first << endl;
+    cout << "P " << (esPrimo ? "es primo": "no es primo") << endl;
+    mpz_probab_prime_p(primos.getPrimos().second, esPrimo);
+    cout << "Segundo primo: " << primos.getPrimos().second << endl;
+    cout << "Q " << (esPrimo ? "es primo": "no es primo") << endl;
+    cout << "\n" << endl;
+
     Claves claves( primos );
-    mpz_t result;
-    mpz_init( result );
-    combinar( claves.get_clavePublica().first, claves.get_clavePublica().second, result );
-    stringstream flujo;
-    flujo << result;
-    string resultado = flujo.str();
-    string otroResultado = "6463401214262201460142975337733990392088820533943096806426069085504931027773578178639440282304582691998984982914355393933369254147028506958630973748010751037283531241064516569548181944580367653976934823988581246561795006960081213304539463352962359913417312689973569004313033660229709065297493713233451754017931596335666590206922370373736909512740326004252930488688185617582670343689958264278737708452178667450878344135498352091657842961432716167802431948070992878418193917499024564074928445026117523851987599030416183958280058439211404064796806714070740820956618443675502647925250442704926039957867791853740779164417165537";
+    pair<mpz_t, mpz_t> publica = claves.get_clavePublica();
+    pair<mpz_t, mpz_t> privado = claves.get_clavePrivada();
 
-    if ( resultado == otroResultado )
-        cout << "Pushea y a dormir" << endl;
+    cout << "Clave Pública: (" << std::hex << publica.first << ", " << std::hex << publica.second << ")" << endl;
+    cout << "Clave Privada: (" << std::hex << privado.first << ", " << std::hex << privado.second << ")" << endl;
+    cout << "\n" << endl;
 
+    int numero;
+    cout << "Introduzca un número: ";
+    cin >> numero;
+
+    mpz_t cifrado; mpz_init_set_ui(cifrado, numero);
+    mpz_t descifrado; mpz_init;
+
+    mpz_powm( cifrado, cifrado, publica.first, publica.second);
+    cout << "Número cifrado: " << endl;
+    cout << std::hex << cifrado << endl;
+
+    mpz_powm ( descifrado, cifrado, privado.first, publica.second);
+    cout << "Número descifrado: " << endl;
+    cout << std::dec << descifrado << endl;
 }
