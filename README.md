@@ -44,7 +44,7 @@ Los componentes son:
 
 Aunque para la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora.
 
-##Programa de prueba
+## Programa de prueba
 En el programa de prueba se coge un número y se cifra y descifra utilizando la implementación básica de RSA:
 
 1. Cifrado: mensaje^e mod n
