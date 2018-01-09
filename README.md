@@ -33,5 +33,6 @@ En el código se puede ver la implementación del test usando GMP, lo cual lo ha
 ### Claves
 La clase de claves tiene la implementación trivial de la generación de claves de RSA. Aunque en la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora. 
 
+*En desarrollo...*
 ### RSA
-La cla
+Este proyecto tiene una rama donde estoy trabajando en cifrar y descifrar archivos de texto.
