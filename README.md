@@ -31,7 +31,18 @@ El test de Miller-Rabin reduce la probablidad en el orden de 4^-k , siendo k el 
 En el código se puede ver la implementación del test usando GMP, lo cual lo hace un poco-bastante menos legible.
 
 ### Claves
-La clase de claves tiene la implementación trivial de la generación de claves de RSA. Aunque en la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora. 
+La clase de claves tiene la implementación trivial de la generación de claves de RSA.
+Los componentes son:
+
+1. Clave pública: (e, n) 
+* n = p*q, siendo p y q dos números primos
+* e se ha eligido el número 65573, conocido como primo de Fermat dado que su representación binaria es un 1 a la izquierda, otro a la derecha, y el resto son ceros; lo cual hace muy eficiente su trabajo internamente. Y dado que es primo, no habrá problemas al calcular la inversa con módulo, ya que esta necesita dos números coprimos. Siendo e un primo, nos ahorramos la comprobación.
+2. Clave privada (d, e)
+* d = e^-1 mod carmichael
+* carmichael = (p-1)(q-1)
+* Carmichael es conocida como la Función Phi, por Robert Carmichael.
+
+Aunque para la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora.
 
 
 
