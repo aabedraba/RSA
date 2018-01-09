@@ -3,7 +3,7 @@ Una implementación profunda de RSA en C++. Digo profunda porque implemento la m
 las diferentes librerías. Esto se ha hecho así para que se pueda tener un ejemplo de cómo se implementaría cada paso, desde la obtención de
 los números primos a usar con las claves hasta la encriptación por bloques.
 
-_Para probar:_
+**Para probar:**
 
 Ir al directorio de este repositorio
 
@@ -15,7 +15,7 @@ Ir al directorio de este repositorio
 
 Y ejecutar con `./RSA`
 
-_Dependencias_
+**Dependencias:**
 
 cmake >3.9: `apt-get install cmake`
 
