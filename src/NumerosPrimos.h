@@ -25,7 +25,7 @@ class NumerosPrimos {
 public:
     explicit NumerosPrimos( const long rango );
     NumerosPrimos( const NumerosPrimos& orig ) = default;
-    virtual ~NumerosPrimos( ) = default;
+    virtual ~NumerosPrimos( );
 
     void primosHastaElMil();
 

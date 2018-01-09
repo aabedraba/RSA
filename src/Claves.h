@@ -12,7 +12,7 @@ class Claves {
 public:
     Claves( NumerosPrimos &primos );
     Claves( const Claves &orig ) = default;
-    virtual ~Claves() = default;
+    virtual ~Claves();
 
     const std::pair<mpz_t, mpz_t> &get_clavePublica( ) const;
     const std::pair<mpz_t, mpz_t> &get_clavePrivada( ) const;

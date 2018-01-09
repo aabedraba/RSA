@@ -13,6 +13,13 @@ Claves::Claves( NumerosPrimos &primos ) {
     crearClavePrivada();
 }
 
+Claves::~Claves( ) {
+    mpz_clear( _p ); mpz_clear( _q ); mpz_clear( _d );
+    mpz_clear( _n ); mpz_clear( _e );
+    mpz_clear( _clavePrivada.first ); mpz_clear( _clavePrivada.second );
+    mpz_clear( _clavePublica.first ); mpz_clear( _clavePublica.second );
+}
+
 void Claves::crearClavePublica() {
     // n = p*q
     // e = 65537
@@ -30,8 +37,8 @@ void Claves::crearClavePrivada( ) {
     mpz_sub_ui( q1, _q, 1 );
     mpz_mul( carmichael, p1, q1 ); // carmichael = (p-1)*(q-1) (Robert Daniel Carmichael <3)
     mpz_invert( _d, _e, carmichael );
-    mpz_set ( _clavePrivada.first, _d );
-    mpz_set ( _clavePrivada.second, _n);
+    mpz_init_set ( _clavePrivada.first, _d );
+    mpz_init_set ( _clavePrivada.second, _n);
 }
 
 const std::pair<mpz_t, mpz_t> &Claves::get_clavePublica( ) const {

@@ -15,6 +15,11 @@ NumerosPrimos::NumerosPrimos(const long rango)
     generaPrimos( rango );
 }
 
+NumerosPrimos::~NumerosPrimos( ) {
+    mpz_clear( _primos.first );
+    mpz_clear( _primos.second );
+}
+
 /**
  * @brief Genera dos números primos en el rango de 2^(rango-1) y 2^rango-1
  * @param rango const long, exponente a elevar el rango

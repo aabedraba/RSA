@@ -41,4 +41,8 @@ int main() {
     mpz_powm ( descifrado, cifrado, privado.first, publica.second);
     cout << "Número descifrado: " << endl;
     cout << std::dec << descifrado << endl;
+
+    mpz_clear ( cifrado );// Limpiando memoria
+    mpz_clear ( descifrado );
+    return 0;
 }
