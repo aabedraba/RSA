@@ -30,7 +30,7 @@ El test de Miller-Rabin reduce la probablidad en el orden de 4^-k , siendo k el 
 
 En el código se puede ver la implementación del test usando GMP, lo cual lo hace un poco-bastante menos legible.
 
-### Claves
+### Keys
 La clase de claves tiene la implementación trivial de la generación de claves de RSA.
 Los componentes son:
 

@@ -6,8 +6,8 @@
 #define RSA_RSA_H
 
 #include <string>
-#include "NumerosPrimos.h"
-#include "Claves.h"
+#include "PrimeNumbers.h"
+#include "Keys.h"
 
 
 class RSA {
@@ -25,7 +25,7 @@ private:
     char* enteroAString(mpz_t x);
 
 private:
-    NumerosPrimos _primos;
+    PrimeNumbers _primos;
     Claves _claves;
 };
 

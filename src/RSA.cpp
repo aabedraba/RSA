@@ -10,10 +10,27 @@ RSA::RSA( int tamClaves )
       _claves ( _primos )
 {}
 
+void RSA::mostrarClaves( ) {
+    mpz_t result;
+    mpz_init( result );
+    combinar( _claves.get_publicKey( ).first, _claves.get_publicKey( ).second, result );
+}
+
+void RSA::combinar( mpz_t a, mpz_t b, mpz_t &resultado ) {
+    mpz_t contador;
+    mpz_init_set_ui( contador, 1 );
+    while ( mpz_cmp( contador, b) < 0 || mpz_cmp( contador, b ) == 0 ) //contador <= b
+        mpz_mul_ui(contador, contador, 10);
+
+    //a*contador + b
+    mpz_mul( resultado, a, contador );
+    mpz_add( resultado, resultado, b );
+}
+
 std::string RSA::cifrar( std::string nomFicheroEntrada ) {
     mpz_t x, c; mpz_inits( x, c );
-    mpz_t &n = _claves.get_clavePublica().first;
-    mpz_t &e = _claves.get_clavePublica().second;
+    mpz_t &n = _claves.get_publicKey( ).first;
+    mpz_t &e = _claves.get_publicKey( ).second;
 
     FILE *fichero;
 
@@ -29,22 +46,8 @@ std::string RSA::cifrar( std::string nomFicheroEntrada ) {
     fclose( fichero );
 }
 
-//void RSA::mostrarClaves( ) {
-//    mpz_t result;
-//    mpz_init( result );
-//    combinar( claves.get_clavePublica().first, claves.get_clavePublica().second, result );
-//}
 
-void RSA::combinar( mpz_t a, mpz_t b, mpz_t &resultado ) {
-    mpz_t contador;
-    mpz_init_set_ui( contador, 1 );
-    while ( mpz_cmp( contador, b) < 0 || mpz_cmp( contador, b ) == 0 ) //contador <= b
-        mpz_mul_ui(contador, contador, 10);
 
-    //a*contador + b
-    mpz_mul( resultado, a, contador );
-    mpz_add( resultado, resultado, b );
-}
 
 char* RSA::enteroAString( __mpz_struct *x ) {
     std::string str = mpz_get_str(NULL,10,x);
