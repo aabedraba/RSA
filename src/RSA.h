@@ -12,7 +12,10 @@
 
 class RSA {
 public:
-    RSA( int tamClaves );
+    explicit RSA( int tamClaves );
+    RSA( const RSA &orig ) = default;
+    virtual ~RSA() = default;
+
     void mostrarClaves();
     std::string cifrar( std::string nomFicheroEntrada );
     void descifrar();
