@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(SRCS
         src/main.cpp
         src/NumerosPrimos.h src/NumerosPrimos.cpp
-        src/Claves.h src/Claves.cpp )
+        src/Claves.h src/Claves.cpp
+        src/RSA.h src/RSA.cpp
+        )
 
 add_executable(RSA
     ${SRCS})
