@@ -25,7 +25,7 @@ PrimeNumbers::~PrimeNumbers( ) {
  * @post dos números primos en el par de variables _primos
  */
 void PrimeNumbers::generatePrimes( const long rango ) {
-    gmp_randstate_t state1; gmp_randinit_mt(state1); // Merssene-Twister initializer, con pseudo-randomness properties
+    gmp_randstate_t state1; gmp_randinit_mt(state1); // Merssene-Twister initializer; good pseudo-randomness properties
     gmp_randstate_t state2; gmp_randinit_default( state2 ); // using different initializer
     mpz_rrandomb( _primes.first, state1, rango);
     mpz_rrandomb( _primes.second, state2, rango+1);
