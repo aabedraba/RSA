@@ -11,7 +11,7 @@ PrimeNumbers::PrimeNumbers(const long range)
     : _first168Primes()
 {
     generateFirst168Primes( ); //generates prime numbers within the range [0, 1000] (168 primes)
-    mpz_inits(_primes.first, _primes.second); //initialization
+    mpz_inits(_primes.first, _primes.second, NULL); //initialization
     generatePrimes( range );
 }
 
@@ -61,9 +61,11 @@ bool PrimeNumbers::isPrime( mpz_t &n ) {
         mpz_div_ui(d, d, 2); // d/=2
 
     int millersTestIterations = 10;
+    bool isPrime = true;
     for (int i = 0; i < millersTestIterations; ++i)
-        if ( !millerRabinsTest( d, n ) ) return false;
-    return true;
+        if ( !millerRabinsTest( d, n ) ) isPrime = false;
+    mpz_clear( d );
+    return isPrime;
 }
 
 
@@ -99,7 +101,7 @@ bool PrimeNumbers::checksWithFirst168Primes( mpz_t &n ) {
     auto it = _first168Primes.begin();
 
     while ( it != _first168Primes.end() )
-        if ( mpz_fdiv_ui(n, (*it++) ) == 0) return false;
+        if ( mpz_fdiv_ui(n, (*it++) ) == 0 ) return false;
 
     return true;
 }
