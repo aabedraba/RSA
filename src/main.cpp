@@ -2,9 +2,13 @@
 #include <gmp.h>
 #include "PrimeNumbers.h"
 #include "Keys.h"
+#include <time.h>
+#include <chrono>
+
 using namespace std;
 
 int main() {
+    auto start = std::chrono::system_clock::now();
     PrimeNumbers primos( 512 );
     cout << "Primer primo: " << primos.getPrimes( )->first << endl;
     cout << "Segundo primo: " << primos.getPrimes( )->second << endl;
@@ -18,9 +22,9 @@ int main() {
     cout << "Clave Privada: (" << std::hex << privado.first << ", " << std::hex << privado.second << ")" << endl;
     cout << "\n" << endl;
 
-    int numero;
-    cout << "Introduzca un número: ";
-    cin >> numero;
+    int numero = 50;
+//    cout << "Introduzca un número: ";
+//    cin >> numero;
 
     mpz_t cifrado; mpz_init_set_ui(cifrado, numero);
     mpz_t descifrado; mpz_init( descifrado );
@@ -34,6 +38,10 @@ int main() {
     cout << std::dec << descifrado << endl;
 
     mpz_clears( cifrado, descifrado, NULL);
+
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+    cout << "Elapsed: " << elapsed;
 
     return 0;
 }
