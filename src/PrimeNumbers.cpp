@@ -39,12 +39,12 @@ void PrimeNumbers::generatePrimes( const long range ) {
     mpz_t *toCheck = &_primes.first;
     while ( !isPrime( toCheck ) )
         mpz_add_ui( _primes.first, _primes.first, 2 ); // _primes.first+=2
-//
-//    toCheck = &_primes.second;
-//    while ( !isPrime( toCheck ))
-//        mpz_add_ui( _primes.second, _primes.second, 2 ); // _primes.second+=2
 
-//    toCheck = 0;
+    toCheck = &_primes.second;
+    while ( !isPrime( toCheck ))
+        mpz_add_ui( _primes.second, _primes.second, 2 ); // _primes.second+=2
+
+    toCheck = 0;
     gmp_randclear( state1 );
     gmp_randclear( state2 );
 }
