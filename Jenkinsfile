@@ -1,4 +1,4 @@
-peline {
+pipeline {
     agent {
       docker { image 'aabedraba/rsa' }
     }
