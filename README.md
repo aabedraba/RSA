@@ -7,7 +7,7 @@ los números primos a usar con las claves hasta la encriptación por bloques.
 
 Estas dependencias se necesitan para poder compilar el proyecto
 
-* cmake >3.9: `apt-get install cmake`
+* cmake >= 3.5: `apt-get install cmake`
 * gmp: `sudo apt install libgmp3-dev`
 
 **Para probar:**
