@@ -8,8 +8,8 @@ pipeline {
                 echo 'Building..'
                 cd build
                 echo 'In build folder. CMake in progress..'
-                cmake ..
-                make
+                sh 'cmake ..'
+                sh 'make check'
             }
         }
     }
