@@ -5,11 +5,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-                cd build
-                echo 'In build folder. CMake in progress..'
-                cmake ..
-                make
+                sh 'echo 'Building..''
+                sh 'cd build'
+                sh 'echo 'In build folder. CMake in progress..''
+                sh 'cmake ..'
+                sh 'make'
             }
         }
     }
