@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                cd build
+                sh 'cd build'
                 echo 'In build folder. CMake in progress..'
                 sh 'cmake ..'
                 sh 'make check'
