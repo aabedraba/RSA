@@ -3,6 +3,15 @@ Una implementación profunda de RSA en C++. Digo profunda porque implemento la m
 las diferentes librerías. Esto se ha hecho así para que se pueda tener un ejemplo de cómo se implementaría cada paso, desde la obtención de
 los números primos a usar con las claves hasta la encriptación por bloques.
 
+**Compile**
+
+If you don't wish to compile and/or download the dependencies, you can use a Docker image that I've prepared (yes, unnecesary, I know). You have to have installed [Docker](https://www.docker.com/community-edition), of course, and then in the repository directory type the following commands:
+
+```bash
+$ docker build . -t rsabinary
+$ docker run -ti rsabinary
+```
+
 **Dependencias:**
 
 Estas dependencias se necesitan para poder compilar el proyecto
