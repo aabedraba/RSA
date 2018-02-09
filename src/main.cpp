@@ -8,7 +8,7 @@
 using namespace std;
 
 int main() {
-    // auto start = std::chrono::system_clock::now();
+    auto start = std::chrono::system_clock::now();
     PrimeNumbers primos( 512 );
     cout << "Primer primo: " << primos.getPrimes( )->first << endl;
     cout << "Segundo primo: " << primos.getPrimes( )->second << endl;
@@ -39,9 +39,9 @@ int main() {
 
     mpz_clears( cifrado, descifrado, NULL);
 
-    // auto end = std::chrono::system_clock::now();
-    // auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
-    // cout << "Elapsed: " << elapsed;
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count();
+     cout << "Elapsed: " << elapsed;
 
     return 0;
 }
