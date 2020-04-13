@@ -1,9 +1,21 @@
 # Implementación del algoritmo RSA
-Una implementación profunda de RSA en C++. Digo profunda porque implemento la mayoría de las funciones en lugar de usar las disponibles en 
-las diferentes librerías. Esto se ha hecho así para que se pueda tener un ejemplo de cómo se implementaría cada paso, desde la obtención de
-los números primos a usar con las claves hasta la encriptación por bloques.
+From obtaining the prime numbers, creating private-public keys to a per-block encryption, this is a ground-up full implementation of the RSA cryptosystem in C++ without any additional library except for [GnuMP](https://gmplib.org/), for managing numbers in the order of 2^2048.
 
-**Compile**
+**Dependecies:**
+
+* cmake >= 3.5: `apt-get install cmake`
+* gmp: `sudo apt install libgmp3-dev`
+
+**To compile:**
+
+```bash
+$ cd build/
+$ cmake ..
+$ make
+```
+And execute with  `./RSA`
+
+**Docker alternative**
 
 If you don't wish to compile and/or download the dependencies, you can use a Docker image that I've prepared (yes, unnecesary, I know). You have to have installed [Docker](https://www.docker.com/community-edition), of course, and then in the repository directory type the following commands:
 
@@ -12,75 +24,31 @@ $ docker build . -t rsabinary
 $ docker run -ti rsabinary
 ```
 
-**Dependencias:**
+## Design
+I use three different classes explained here:
 
-Estas dependencias se necesitan para poder compilar el proyecto
+### PrimeNumbers
+This class concerns only the generation of prime numbers with desired length that will then be used to obtain the public-private keys. Normally we use prime numbers in the order of 1024bits.
 
-* cmake >= 3.5: `apt-get install cmake`
-* gmp: `sudo apt install libgmp3-dev`
+To check if a number is prime, we should check if the number isn't divisible by all smaller prime numbers. So, in theory, we would have to save all these smaller prime numbers. But as we're working with numbers in the order of 1024bit (approx. 700 digits) saving all the prime numbers in this order in a hard disk would make a black hole collapse.  
 
-**Para probar:**
+So, the fastest (and safest for the universe) way is to make a probabilistic verification, instead of deterministic, to check if the number could be a possible prime number.
 
-Ir al directorio del repositorio
+For that I decided to use the [**Miller-Rabin**](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test) primality test, that **increases** to an acceptable magnitude the probablity of a number not being prime. Nevertheless, this test is hard on CPU and thus runs slowly, so we should use it as little as possible. 
 
-```bash
-$ cd build/
-$ cmake ..
-$ make
-```
+So, to reduce the number of uses of the Miller-Rabin test, we first "manually" check if the random number chosen is not divisible by all the prime number in the range of [2, 1000]. By doing that, we are increasing the probabity of being prime to 90% (see [Prime Number Theorem](https://en.wikipedia.org/wiki/Prime_number_theorem)). So, with that done, we can procede to use the Miller-Rabin primality test, making the process way more efficient. 
 
-Y ejecutar con `./RSA`
+Now, the Miller-Rabin primailty test reduces the probablity in the order of 4^-k, with `k` being the number of iterations of the test. So, starting from 90%, with 10 iterations we would have a **99.9999915736%** chance of being a prime random number. Enough.
 
+### Keys
+The `Keys`class has the trivial implementation of public-private key generation for RSA.
 
-## Motivación
-Esta implementación es parte de un ejercicio de las prácticas de Seguridad en mi universidad. Mi profe, Manuel Lucena, me dijo que me pondría
-un diez si hago una buena implementación, así que iré informando de si me ha puesto o no el diez :P
+1. We need two numbers for the public Key: `(e, n)` 
+* `n = p*q`, being `p and k` two prime numbers.
+* `e` has been chosen to be the number 65573, known as [Fermat's prime number](https://en.wikipedia.org/wiki/Fermat_number) as its binary representation is `10000000000000001` which makes it very suitable for efficient binary operations. And given it's a prime number, when we need to obtain our original `p` and `q` from the private key the process would be trivial, as we already have one of the coprimes we save the check.
+2. For our private key we need another two numbers `(d, e)`
+* `d = e^-1 mod carmichael`
+* `carmichael` = `(p-1)(q-1)`
+  * Carmichael is know as the [Phi Function](https://en.wikipedia.org/wiki/Carmichael_function), by Robert Carmichael.
 
-## Diseño
-Tenemos tres clases cuyos métodos iré explicando uno a uno a continuación:
-
-### Números primos
-En esta clase se generan los números primos que después se utilizarán para la obtención de las claves públicas y privadas. He preferido
-hacerlo en una clase aparte para que se pueda tener una idea clara de cómo se generan los números primos de gran longitud (en este caso
-utilizo primos de longitud en el rango de 1024bits).
-
-Para comprobar que un número es o no primo, habría que comprobar que no sea divisible por todos los primos menores que ese número.
-Para ello, tendría que guardar todos los números primos que hay por debajo de ese número en una lista e ir comprobando uno por uno.
-En el caso de números pequeños, sería relativamente manejable. Pero como en este caso los números son de 1024 bits (aproximadamente una
-cifra de 700 dígitos) guardar todos los números primos sería imposible y en caso de poder guardarse en un disco duro, a palabras de mi profesor, éste podría hacer que un agujero negro colapse. 
-
-Poooor lo tanto, hay que hacer una comprobación probabilística, en lugar de determinista, de si un número es o no probable de ser primo, valga la redundancia.
-
-Para poder hacerlo se ha decidido utilizar el test de **Miller-Rabin**, que reduce a una magnitud aceptable la probabilidad de que un número no sea primo. Sin embargo, el test de Miller-Rabin es poco eficiente y hacer muchas comprobaciones no sería lo más adecuado. 
-
-Por ello hago una lista de todo los números primos que hay en el rango [2, 1000]. Comprobando que mi número no sea divisible por esa lista hace que aumente la probabilidad al 90% de que el número eligido sea primo. Por lo tanto con esto y con una pocas iteraciones del test de Miller-Rabin, conseguimos hacer eficiente la determinación probabilística de que un número aleatorio de tamaño grande no sea primo.
-
-El test de Miller-Rabin reduce la probablidad en el orden de 4^-k , siendo k el número de iteraciones que se realizan de este test. Por tanto, junto con el 90% que ya hemos descartado, 10 iteraciones de este test hacen que la probabilidad de que un número no sea primo sea de **99.9999915736%**. Enough.
-
-En el código se puede ver la implementación del test usando GMP, lo cual lo hace un poco-bastante menos legible.
-
-### Claves
-La clase de claves tiene la implementación trivial de la generación de claves de RSA.
-Los componentes son:
-
-1. Clave pública: (e, n) 
-* n = p*q, siendo p y q dos números primos
-* e se ha eligido el número 65573, conocido como primo de Fermat dado que su representación binaria es un 1 a la izquierda, otro a la derecha, y el resto son ceros; lo cual hace muy eficiente su trabajo internamente. Y dado que es primo, no habrá problemas al calcular la inversa con módulo, ya que esta necesita dos números coprimos. Siendo e un primo, nos ahorramos la comprobación.
-2. Clave privada (d, e)
-* d = e^-1 mod carmichael
-* carmichael = (p-1)(q-1)
-* Carmichael es conocida como la Función Phi, por Robert Carmichael.
-
-Aunque para la parte de calcular d (la inversa de e módulo phi) he utilizado una función implementada en GMP para su resolución ya que mi implementación del *Método de Euclides* implicaba una recursividad y GMP no tiene soporte para ello, por ahora.
-
-## Programa de prueba
-En el programa de prueba se coge un número y se cifra y descifra utilizando la implementación básica de RSA:
-
-1. Cifrado: mensaje^e mod n
-2. Descifrado: mensajeCifrado^d mod n
-
-Si ejecuta el programa repetidas veces verá que los números primos que se generan son los mismos ya que para la consistencia y simplicidad he preferido no darle una semilla al generador de los números primos. Aunque el cálculo de los mismo es orgánico en el código.
-
-**En desarrollo...**
-### RSA
-Este proyecto tiene una rama donde estoy trabajando en cifrar y descifrar archivos de texto.
+`e^-1 mod carmichael` requires the [*Euclidian Algorithm*](https://en.wikipedia.org/wiki/Euclidean_algorithm) which requires recursion and GnuMP doesn't support that, so I used a method from the library. 
