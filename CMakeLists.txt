@@ -7,7 +7,6 @@ set(SRCS
         src/main.cpp
         src/PrimeNumbers.h src/PrimeNumbers.cpp
         src/Keys.h src/Keys.cpp
-#        src/RSA.h src/RSA.cpp
         )
 
 add_executable(RSA
